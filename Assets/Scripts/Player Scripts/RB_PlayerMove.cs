@@ -1,5 +1,6 @@
 using Photon.Pun;
 using UnityEngine;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class RB_PlayerMove : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class RB_PlayerMove : MonoBehaviour
 
     void Start()
     {
+        // gets required components from the game object this script is attached to
         rb = GetComponent<Rigidbody>();
         pv = GetComponent<PhotonView>();
 
@@ -35,30 +37,43 @@ public class RB_PlayerMove : MonoBehaviour
 
     void Update()
     {
+        // if the player doesn't own this component, prevents logic from operating on other existing players
         if (!pv.IsMine) return;
 
+        // detects input, uses W A S D as parameters for Vector2
+        // A and D for (X), W and S for (Y)
         input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+        // keeps input values consistent
         input.Normalize();
 
+        // boolean values based on input
         isSprinting = Input.GetButton("Sprint");
         isJumping = Input.GetButton("Jump");
     }
 
     private void OnTriggerStay(Collider other)
     {
+        // if the player doesn't own this component, prevents logic from operating on other existing players
         if (!pv.IsMine) return;
         isGrounded = true;
     }
 
     private void FixedUpdate()
     {
+        // if the player doesn't own this component, prevents logic from operating on other existing players
         if (!pv.IsMine) return;
 
+
+        // increased gravity because default setting made it look wierd
         rb.AddForce(Physics.gravity * 3f, ForceMode.Acceleration);
+
+        // runs an if statement. If the player is sprinting, use sprint speed, else use walk speed
         rb.AddForce(CalculateMovement(isSprinting ? sprintSpeed : walkSpeed), ForceMode.VelocityChange);
 
         if (isJumping && isGrounded)
         {
+            // apply a force using a vector to jump. Jumpforce is placed at Y in the parameters, x and z are 0
             Vector3 jump = new Vector3(0, jumpForce, 0);
             rb.AddForce(jump, ForceMode.Impulse);
         }
@@ -66,26 +81,40 @@ public class RB_PlayerMove : MonoBehaviour
         isGrounded = false;
     }
 
+    // literally in the name, for calculating movement
     Vector3 CalculateMovement(float _speed)
     {
+        // uses Vector2 input and transform it into a Vector3
+        // input.y is placed in z because its a 3D axis instead of 2D
         Vector3 targetVelocity = new Vector3(input.x, 0, input.y);
+
+        // allows rotation
         targetVelocity = transform.TransformDirection(targetVelocity);
         targetVelocity *= _speed;
 
         Vector3 velocity = rb.linearVelocity;
 
+        // if condition to determine if the strength of input is detected
         if (input.magnitude > 0.5f)
         {
+            // determine how much the velocity needs to change to reach the target velocity
             Vector3 velocityChange = targetVelocity - velocity;
 
+            // limit how much the velocity can change on the X axis,
             velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
+
+            // limit how much the velocity can change on the Z axis,
             velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
+
+            // prevents any velocity changes to the Y axis
             velocityChange.y = 0;
 
+            // returns the clamped velocity change
             return velocityChange;
         }
         else
         {
+            // if no movement is detected, return an empty vector
             return Vector3.zero;
         }
     }

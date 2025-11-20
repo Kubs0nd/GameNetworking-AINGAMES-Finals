@@ -1,6 +1,8 @@
 using UnityEngine;
 using Photon.Pun;
 
+// too lazy to comment this part
+// this script is just for double checking to make sure which is the local and which is the remote player
 public class PlayerSetup : MonoBehaviour
 {
     private PhotonView pv;

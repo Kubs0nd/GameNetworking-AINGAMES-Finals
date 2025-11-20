@@ -34,6 +34,9 @@ public class PlayerSync : MonoBehaviour, IPunObservable
         }
     }
 
+    // stolen code from sir ehe
+    // this function is for smoothly interpolating and syncing any player changes made in the screen of another player
+    // Photon View Transform and Photon View Rigidbody can do this but it looked very jittery
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
