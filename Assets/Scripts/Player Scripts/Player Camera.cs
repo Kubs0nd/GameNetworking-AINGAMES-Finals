@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 using Photon.Pun;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
-using UnityEngine.InputSystem;
 
 public class PlayerCamera : MonoBehaviour
 {
+    // comments cleaned up
+
     [Header("Player Camera Settings")]
     public Transform cameraRoot;
     public float sensitivity = 200f;
@@ -17,18 +17,25 @@ public class PlayerCamera : MonoBehaviour
     private Vector2 smoothMouseVelocity;
 
     private PhotonView pv;
+    private Rigidbody rb;
 
     void Awake()
     {
         pv = GetComponentInParent<PhotonView>();
-        // playerCamera is a child object, so we get the PhotonView from the parent object which is the player
+        rb = GetComponentInParent<Rigidbody>();
+
+        if (rb != null)
+        {
+            rb.interpolation = RigidbodyInterpolation.Interpolate;
+            rb.freezeRotation = true;
+        }
     }
 
     void Start()
     {
-        if (!pv.IsMine)
+        if (!pv.IsMine) // prevents logic from running on other players
         {
-            // disable camera for remote players
+            // disable camera and audio for remote players
             Camera cam = cameraRoot.GetComponentInChildren<Camera>();
             if (cam != null) cam.enabled = false;
 
@@ -38,24 +45,18 @@ public class PlayerCamera : MonoBehaviour
             return;
         }
 
-        // hide cursor and keeps it from leaving the play screen
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
     void Update()
     {
-        if (!pv.IsMine) return;  // ensures only local player controls the camera
+        if (!pv.IsMine) return;
 
-        // read raw mouse input for X (horizontal) and Y (vertical) movement
+        // read raw mouse input
         Vector2 mouseInput = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
 
-        // smooth the mouse input over time to avoid sudden jumps (like built-in mouse smoothing)
-        // smoothMouseInput = current smoothed value
-        // mouseInput = target value
-        // smoothMouseVelocity = ref variable required by SmoothDamp to track speed
-        // mouseSmoothTime = time it takes to reach the target smoothly
-        // idk if you'll understand this anyway
+        // smooth the input to avoid sudden jumps
         smoothMouseInput = Vector2.SmoothDamp(
             smoothMouseInput,
             mouseInput,
@@ -63,16 +64,26 @@ public class PlayerCamera : MonoBehaviour
             mouseSmoothTime
         );
 
-        // rotate the player (Y-axis rotation) based on smoothed horizontal mouse movement
-        transform.Rotate(Vector3.up * smoothMouseInput.x * sensitivity * Time.deltaTime);
-
-        // adjust vertical rotation (pitch) using smoothed vertical mouse movement
+        // handle vertical rotation (pitch) in Update/LateUpdate
         pitch -= smoothMouseInput.y * sensitivity * Time.deltaTime;
-
-        // clamp pitch so the camera can't rotate too far up or down
         pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+    }
 
-        // apply vertical rotation to the camera root only (not the entire player)
+    void LateUpdate()
+    {
+        if (!pv.IsMine) return;
+
+        // apply pitch to camera root
         cameraRoot.localRotation = Quaternion.Euler(pitch, 0f, 0f);
+    }
+
+    void FixedUpdate()
+    {
+        if (!pv.IsMine || rb == null) return;
+
+        // handle horizontal rotation (yaw) by rotating Rigidbody smoothly
+        float turnAmount = smoothMouseInput.x * sensitivity * Time.fixedDeltaTime;
+        Quaternion targetRotation = rb.rotation * Quaternion.Euler(0f, turnAmount, 0f);
+        rb.MoveRotation(targetRotation);
     }
 }

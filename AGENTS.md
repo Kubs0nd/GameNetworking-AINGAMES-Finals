@@ -2,7 +2,7 @@
 - Project name: GameNetworking-AINGAMES-Finals
 - Unity version: Unity 6000.2.12f1
 - Active game object:
-  - Name: Player
+  - Name: Player(Clone)
   - Tag: Player
-  - Layer: Default
+  - Layer: Player_
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
