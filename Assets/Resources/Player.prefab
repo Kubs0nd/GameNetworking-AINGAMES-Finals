@@ -358,6 +358,13 @@ MonoBehaviour:
   sprintSpeed: 8
   maxVelocityChange: 10
   jumpForce: 5
+  animator: {fileID: 0}
+  modelRoot: {fileID: 0}
+  groundCheckPoint: {fileID: 0}
+  groundCheckRadius: 0.3
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &2779471805412788710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,7 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MouseLook
   cameraRoot: {fileID: 9171021170745894891}
-  sensitivity: 150
+  sensitivity: 200
   minPitch: -50
   maxPitch: 50
   mouseSmoothTime: 0.025
@@ -441,6 +448,9 @@ MonoBehaviour:
   playerCameraTransform: {fileID: 9171021170745894891}
   itemGrabPointTransform: {fileID: 5501914391389431369}
   itemEquipPointTransform: {fileID: 8888368703832527643}
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 0
   interactRange: 3
 --- !u!1 &4170801362038698649
 GameObject:

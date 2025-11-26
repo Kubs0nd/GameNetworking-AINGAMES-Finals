@@ -6,7 +6,7 @@ public class ItemGrabable : MonoBehaviourPun, IPunObservable
     private Rigidbody rb;
     private Transform itemGrabPointTransform;
 
-    // Network interpolation
+    // network interpolation
     private Vector3 networkPosition;
     private Quaternion networkRotation;
     private Vector3 networkVelocity;
@@ -24,13 +24,15 @@ public class ItemGrabable : MonoBehaviourPun, IPunObservable
     {
         this.itemGrabPointTransform = itemGrabPointTransform;
 
-        if (photonView != null)
-        {
+        // photon ownership
+        if (photonView != null && !photonView.IsMine)
             photonView.RequestOwnership();
-        }
+
+        // sets the layer of the object to "Equipped" to prevent other players from taking it from your hands
+        gameObject.layer = LayerMask.NameToLayer("Grabbed");
 
         rb.linearDamping = 5f;
-        rb.angularDamping = 5f;
+        rb.freezeRotation = true;
         rb.useGravity = false;
     }
 
@@ -39,8 +41,43 @@ public class ItemGrabable : MonoBehaviourPun, IPunObservable
     {
         this.itemGrabPointTransform = null;
 
+        gameObject.layer = LayerMask.NameToLayer("Grabable Item");
+
         rb.linearDamping = 0f;
         rb.angularDamping = 0.05f;
+        rb.freezeRotation = false;
+        rb.useGravity = true;
+    }
+
+    // RPC called by Interact to inform ALL clients that this item was grabbed
+    [PunRPC]
+    void RPC_Grab(int playerViewID)
+    {
+        // if owner, local Grab() already set up the follow transform.
+        // non-owners only need to update visible state (layer/physics).
+        if (photonView.IsMine) return;
+
+        // sets the layer of the object to "Equipped" to prevent other players from taking it from your hands
+        gameObject.layer = LayerMask.NameToLayer("Grabbed");
+
+        rb.linearDamping = 5f;
+        rb.freezeRotation = true;
+        rb.useGravity = false;
+    }
+
+    // RPC called by Interact to inform ALL clients that this item was dropped
+    [PunRPC]
+    void RPC_Drop()
+    {
+        if (photonView.IsMine) return;
+
+        this.itemGrabPointTransform = null;
+
+        gameObject.layer = LayerMask.NameToLayer("Grabable Item");
+
+        rb.linearDamping = 0f;
+        rb.angularDamping = 0.05f;
+        rb.freezeRotation = false;
         rb.useGravity = true;
     }
 
@@ -57,11 +94,11 @@ public class ItemGrabable : MonoBehaviourPun, IPunObservable
         }
         else if (!photonView.IsMine)
         {
-            // Smoothly interpolate network position and rotation
+            // smoothly interpolate network position and rotation
             rb.MovePosition(Vector3.Lerp(rb.position, networkPosition, followSpeed * Time.fixedDeltaTime));
             rb.MoveRotation(Quaternion.Lerp(rb.rotation, networkRotation, followSpeed * Time.fixedDeltaTime));
 
-            // Apply network velocity to keep physics realistic
+            // apply network velocity to keep physics realistic
             rb.linearVelocity = networkVelocity;
             rb.angularVelocity = networkAngularVelocity;
         }
@@ -72,7 +109,7 @@ public class ItemGrabable : MonoBehaviourPun, IPunObservable
     {
         if (stream.IsWriting)
         {
-            // Send full Rigidbody state
+            // send full Rigidbody state
             stream.SendNext(rb.position);
             stream.SendNext(rb.rotation);
             stream.SendNext(rb.linearVelocity);
@@ -80,7 +117,7 @@ public class ItemGrabable : MonoBehaviourPun, IPunObservable
         }
         else
         {
-            // Receive networked state
+            // receive networked state
             networkPosition = (Vector3)stream.ReceiveNext();
             networkRotation = (Quaternion)stream.ReceiveNext();
             networkVelocity = (Vector3)stream.ReceiveNext();

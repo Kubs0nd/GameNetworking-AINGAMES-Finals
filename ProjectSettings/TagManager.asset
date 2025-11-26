@@ -8,14 +8,14 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
   - Grabable Item
   - Equipable Item
   - Player_
-  - 
-  - 
+  - Grabbed
+  - Equipped
   - 
   - 
   - 

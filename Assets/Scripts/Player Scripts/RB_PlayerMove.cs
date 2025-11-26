@@ -10,13 +10,22 @@ public class RB_PlayerMove : MonoBehaviour
     public float maxVelocityChange = 10f;
     public float jumpForce = 30f;
 
+    [Header("Animation")]
+    public Animator animator;
+    public Transform modelRoot;
+
     private bool isSprinting;
     private bool isJumping;
     private bool isGrounded;
+    private bool jumpTriggered;
 
     private Vector2 input;
     private Rigidbody rb;
     private PhotonView pv;
+
+    public float groundCheckRadius = 0.35f;
+    public float groundCheckDistance = 0.6f;
+    public LayerMask groundMask;
 
     void Start()
     {
@@ -49,14 +58,24 @@ public class RB_PlayerMove : MonoBehaviour
 
         // boolean values based on input
         isSprinting = Input.GetButton("Sprint");
-        isJumping = Input.GetButton("Jump");
-    }
+        isJumping = Input.GetButtonDown("Jump"); 
 
-    private void OnTriggerStay(Collider other)
-    {
-        // if the player doesn't own this component, prevents logic from operating on other existing players
-        if (!pv.IsMine) return;
-        isGrounded = true;
+        // update animator
+        if (animator)
+        {
+            float speedPercent = rb.linearVelocity.magnitude / sprintSpeed;
+            animator.SetFloat("Speed", speedPercent, 0.1f, Time.deltaTime);
+
+            animator.SetBool("IsGrounded", isGrounded);
+        }
+
+        // rotate model based on motion
+        if (modelRoot && rb.linearVelocity.sqrMagnitude > 0.1f)
+        {
+            Vector3 look = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+            Quaternion targetRot = Quaternion.LookRotation(look);
+            modelRoot.rotation = Quaternion.Slerp(modelRoot.rotation, targetRot, Time.deltaTime * 10f);
+        }
     }
 
     private void FixedUpdate()
@@ -64,6 +83,8 @@ public class RB_PlayerMove : MonoBehaviour
         // if the player doesn't own this component, prevents logic from operating on other existing players
         if (!pv.IsMine) return;
 
+        // cast a sphere on the feet of the player to detect the ground
+        isGrounded = Physics.SphereCast(transform.position + Vector3.up * 0.1f, groundCheckRadius, Vector3.down, out RaycastHit hit, groundCheckDistance, groundMask);
 
         // increased gravity because default setting made it look wierd
         rb.AddForce(Physics.gravity * 3f, ForceMode.Acceleration);
@@ -71,15 +92,25 @@ public class RB_PlayerMove : MonoBehaviour
         // runs an if statement. If the player is sprinting, use sprint speed, else use walk speed
         rb.AddForce(CalculateMovement(isSprinting ? sprintSpeed : walkSpeed), ForceMode.VelocityChange);
 
-        if (isJumping && isGrounded)
+        // jump logic
+        if (isJumping && isGrounded && !jumpTriggered)
         {
             // apply a force using a vector to jump. Jumpforce is placed at Y in the parameters, x and z are 0
             Vector3 jump = new Vector3(0, jumpForce, 0);
             rb.AddForce(jump, ForceMode.Impulse);
+
+            // play animation 
+            if (animator)
+                animator.SetTrigger("Jump");
+
+            jumpTriggered = true; // prevent double jump
         }
 
-        isGrounded = false;
+        // allow jump again once grounded
+        if (isGrounded)
+            jumpTriggered = false;
     }
+
 
     // literally in the name, for calculating movement
     Vector3 CalculateMovement(float _speed)

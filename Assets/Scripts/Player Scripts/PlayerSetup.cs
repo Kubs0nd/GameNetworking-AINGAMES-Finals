@@ -9,8 +9,7 @@ public class PlayerSetup : MonoBehaviour
     public Camera mainCam;
     public AudioListener listener;
 
-    // Add UI reference
-    public GameObject playerCanvas; // assign the canvas here
+    public GameObject playerCanvas; 
 
     private void Awake()
     {
