@@ -30,6 +30,16 @@ public class Interact : MonoBehaviour
 
         PickUp();
         Drop();
+
+        //if the held object or equipped item was destroyed, free the hand
+        if (!isHandEmpty)
+        {
+            if (currentItem == null && equippedItem == null)
+            {
+                // the object was destroyed outside of interaction
+                isHandEmpty = true;
+            }
+        }
     }
 
     private void Drop()

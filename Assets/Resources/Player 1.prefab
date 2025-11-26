@@ -1173,8 +1173,8 @@ MonoBehaviour:
   jumpForce: 15
   animator: {fileID: 8206704134865656723}
   modelRoot: {fileID: 8825757065975845559}
-  groundCheckPoint: {fileID: 3205849869390729589}
   groundCheckRadius: 0.18
+  groundCheckDistance: 0.6
   groundMask:
     serializedVersion: 2
     m_Bits: 8
