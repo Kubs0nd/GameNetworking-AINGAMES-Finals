@@ -15,11 +15,13 @@ public class ItemEquipable : MonoBehaviourPun, IPunObservable
     private Vector3 networkAngularVelocity;
 
     private float followSpeed = 20f;
+    private bool isEquipped;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         rb.interpolation = RigidbodyInterpolation.Interpolate;
+        isEquipped = false;
     }
 
     // called when the player grabs the item
@@ -34,6 +36,7 @@ public class ItemEquipable : MonoBehaviourPun, IPunObservable
         // Sets the layer of the object to "Equipped" to prevent other players from taking it from your hands
         gameObject.layer = LayerMask.NameToLayer("Equipped");
 
+        isEquipped = true;
         rb.linearDamping = 5f;
         rb.freezeRotation = true;
         rb.useGravity = false;
@@ -47,6 +50,7 @@ public class ItemEquipable : MonoBehaviourPun, IPunObservable
         // Sets the layer back to a "Equipable Item" where the any player can equip it
         gameObject.layer = LayerMask.NameToLayer("Equipable Item");
 
+        isEquipped = false;
         rb.linearDamping = 0f;
         rb.freezeRotation = false;
         rb.useGravity = true;

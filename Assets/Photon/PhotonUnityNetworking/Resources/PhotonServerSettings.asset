@@ -42,6 +42,7 @@ MonoBehaviour:
   - RPC_SpawnSmoke
   - RPC_Drop
   - RPC_Grab
+  - RPC_CleanUp
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
