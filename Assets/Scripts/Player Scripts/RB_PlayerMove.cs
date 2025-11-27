@@ -80,36 +80,34 @@ public class RB_PlayerMove : MonoBehaviour
 
     private void FixedUpdate()
     {
-        // if the player doesn't own this component, prevents logic from operating on other existing players
         if (!pv.IsMine) return;
 
-        // cast a sphere on the feet of the player to detect the ground
-        isGrounded = Physics.SphereCast(transform.position + Vector3.up * 0.1f, groundCheckRadius, Vector3.down, out RaycastHit hit, groundCheckDistance, groundMask);
+        // --- Ground Check ---
+        Vector3 groundCheckPos = transform.position + Vector3.down * 0.1f; // small offset below the player
+        isGrounded = Physics.CheckSphere(groundCheckPos, groundCheckRadius, groundMask, QueryTriggerInteraction.Ignore);
 
-        // increased gravity because default setting made it look wierd
+        // --- Gravity ---
         rb.AddForce(Physics.gravity * 3f, ForceMode.Acceleration);
 
-        // runs an if statement. If the player is sprinting, use sprint speed, else use walk speed
+        // --- Movement ---
         rb.AddForce(CalculateMovement(isSprinting ? sprintSpeed : walkSpeed), ForceMode.VelocityChange);
 
-        // jump logic
+        // --- Jump ---
         if (isJumping && isGrounded && !jumpTriggered)
         {
-            // apply a force using a vector to jump. Jumpforce is placed at Y in the parameters, x and z are 0
-            Vector3 jump = new Vector3(0, jumpForce, 0);
-            rb.AddForce(jump, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
 
-            // play animation 
             if (animator)
                 animator.SetTrigger("Jump");
 
             jumpTriggered = true; // prevent double jump
         }
 
-        // allow jump again once grounded
-        if (isGrounded)
+        // reset jump when grounded
+        if (isGrounded && rb.linearVelocity.y <= 0.01f)
             jumpTriggered = false;
     }
+
 
 
     // literally in the name, for calculating movement
@@ -148,5 +146,11 @@ public class RB_PlayerMove : MonoBehaviour
             // if no movement is detected, return an empty vector
             return Vector3.zero;
         }
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawWireSphere(transform.position + transform.forward * 0, groundCheckRadius);
     }
 }
