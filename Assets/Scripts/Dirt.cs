@@ -36,6 +36,10 @@ public class Dirt : MonoBehaviourPun, IPunObservable
             if (cleanProgress >= maxCleanProgress)
             {
                 dirt1.SetActive(false);
+
+                GameManager gm = FindAnyObjectByType<GameManager>();
+                if (gm != null)
+                    gm.TrashDumped();
             }
         }
     }
