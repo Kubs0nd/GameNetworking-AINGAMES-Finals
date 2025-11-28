@@ -81,7 +81,7 @@ public class ItemGrabable : MonoBehaviourPun, IPunObservable
         rb.useGravity = true;
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         if (itemGrabPointTransform != null && photonView.IsMine)
         {

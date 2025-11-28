@@ -90,7 +90,7 @@ public class ItemEquipable : MonoBehaviourPun, IPunObservable
         rb.freezeRotation = false;
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         if (photonView.IsMine && itemEquipPointTransform != null)
         {

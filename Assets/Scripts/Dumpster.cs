@@ -15,7 +15,8 @@ public class Dumpster : MonoBehaviourPun
         boxCollider = GetComponent<BoxCollider>();
     }
 
-    void Update()
+    [System.Obsolete]
+    void FixedUpdate()
     {
         Vector3 center = boxCollider.bounds.center;
         Vector3 halfExtents = boxCollider.bounds.extents;
