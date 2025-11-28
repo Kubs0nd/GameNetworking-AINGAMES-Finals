@@ -6,6 +6,7 @@ public class Dumpster : MonoBehaviourPun
     [Header("References")]
     public BoxCollider boxCollider;
     public GameObject smokeEffectPrefab;
+    public float smokeLifetime = 3f;
 
     private Collider[] overlapResults = new Collider[10];
 
@@ -14,9 +15,9 @@ public class Dumpster : MonoBehaviourPun
         boxCollider = GetComponent<BoxCollider>();
     }
 
+    [System.Obsolete]
     void FixedUpdate()
     {
-        // use Physics.OverlapBox to detect objects inside the dumpster
         Vector3 center = boxCollider.bounds.center;
         Vector3 halfExtents = boxCollider.bounds.extents;
         Quaternion rotation = transform.rotation;
@@ -31,14 +32,15 @@ public class Dumpster : MonoBehaviourPun
             Trash trash = col.GetComponent<Trash>();
             if (trash != null)
             {
-                // only the Master Client should destroy the object
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    // destroy the object across the network
-                    PhotonNetwork.Destroy(col.gameObject);
+                    PhotonNetwork.Destroy(trash.gameObject);
 
-                    // spawn smoke effect for everyone
-                    photonView.RPC("RPC_SpawnSmoke", RpcTarget.All, col.transform.position);
+                    GameManager gm = FindAnyObjectByType<GameManager>();
+                    if (gm != null)
+                        gm.TrashDumped();
+
+                    photonView.RPC("RPC_SpawnSmoke", RpcTarget.AllBuffered, trash.transform.position);
                 }
             }
         }
@@ -49,7 +51,8 @@ public class Dumpster : MonoBehaviourPun
     {
         if (smokeEffectPrefab != null)
         {
-            Instantiate(smokeEffectPrefab, position, Quaternion.identity);
+            GameObject smoke = Instantiate(smokeEffectPrefab, position, Quaternion.identity);
+            Destroy(smoke, smokeLifetime);
         }
     }
 }

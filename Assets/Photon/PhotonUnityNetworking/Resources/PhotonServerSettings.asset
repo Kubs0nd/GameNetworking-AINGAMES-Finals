@@ -43,6 +43,9 @@ MonoBehaviour:
   - RPC_Drop
   - RPC_Grab
   - RPC_CleanUp
+  - RPC_TrashDrop
+  - RPC_TrashGrab
+  - RPC_IncrementTrashCounter
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

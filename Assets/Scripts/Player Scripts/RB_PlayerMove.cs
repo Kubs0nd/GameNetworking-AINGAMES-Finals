@@ -58,7 +58,18 @@ public class RB_PlayerMove : MonoBehaviour
 
         // boolean values based on input
         isSprinting = Input.GetButton("Sprint");
-        isJumping = Input.GetButtonDown("Jump"); 
+        isJumping = Input.GetButtonDown("Jump");
+
+        // --- Jump ---
+        if (isJumping && isGrounded && !jumpTriggered)
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+
+            if (animator)
+                animator.SetTrigger("Jump");
+
+            jumpTriggered = true; // prevent double jump
+        }
 
         // update animator
         if (animator)
@@ -92,16 +103,7 @@ public class RB_PlayerMove : MonoBehaviour
         // --- Movement ---
         rb.AddForce(CalculateMovement(isSprinting ? sprintSpeed : walkSpeed), ForceMode.VelocityChange);
 
-        // --- Jump ---
-        if (isJumping && isGrounded && !jumpTriggered)
-        {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-
-            if (animator)
-                animator.SetTrigger("Jump");
-
-            jumpTriggered = true; // prevent double jump
-        }
+        
 
         // reset jump when grounded
         if (isGrounded && rb.linearVelocity.y <= 0.01f)
