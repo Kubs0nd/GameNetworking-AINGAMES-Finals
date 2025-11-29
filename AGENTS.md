@@ -2,7 +2,7 @@
 - Project name: GameNetworking-AINGAMES-Finals
 - Unity version: Unity 6000.2.12f1
 - Active game object:
-  - Name: Dirt1 (Interactable) (1)
+  - Name: Cube
   - Tag: Untagged
-  - Layer: Dirt
+  - Layer: Grabable Item
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

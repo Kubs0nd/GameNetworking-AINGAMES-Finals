@@ -1,132 +1,86 @@
 using UnityEngine;
 using Photon.Pun;
+using static UnityEngine.UI.Image;
+using Unity.VisualScripting;
 
 public class Interact : MonoBehaviour
 {
-    [Header("Item Interaction Settings")]
     [SerializeField] private Transform playerCameraTransform;
     [SerializeField] private Transform itemGrabPointTransform;
     [SerializeField] private Transform itemEquipPointTransform;
     [SerializeField] private LayerMask layerMask;
-    public int interactRange;
-
-    private RaycastHit hit;
-    private bool isHandEmpty;
-    private ItemGrabable currentItem;
-    private ItemEquipable equippedItem;
+    [SerializeField] private float interactRange = 3f;
 
     private PhotonView pv;
+    private ItemGrabable currentItem;
+    private ItemEquipable equippedItem;
+    private bool isHandEmpty => currentItem == null && equippedItem == null;
 
-    private void Start()
+
+    private void Awake()
     {
         pv = GetComponent<PhotonView>();
-        isHandEmpty = true; // hand starts empty
     }
 
-    void Update()
+    private void Update()
     {
-        // only run input on the local player
         if (!pv.IsMine) return;
 
-        PickUp();
-        Drop();
-
-        //if the held object or equipped item was destroyed, free the hand
         if (!isHandEmpty)
         {
-            if (currentItem == null && equippedItem == null)
+            if (currentItem == null || currentItem.Equals(null))
             {
-                // the object was destroyed outside of interaction
-                isHandEmpty = true;
+                currentItem = null;
+            }
+
+            if (equippedItem == null || equippedItem.Equals(null))
+            {
+                equippedItem = null;
             }
         }
-    }
 
-    private void Drop()
-    {
-        // drop item
+
+        if (Input.GetKeyDown(KeyCode.E) && isHandEmpty)
+        {
+            Debug.DrawRay(playerCameraTransform.position, playerCameraTransform.forward * interactRange, Color.red);
+            if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out RaycastHit hit, interactRange, layerMask))
+            {
+                if (hit.transform.TryGetComponent(out ItemGrabable grabable))
+                {
+                    grabable.Grab(itemGrabPointTransform);
+                    currentItem = grabable;
+                    grabable.photonView.RPC("RPC_OnGrab", RpcTarget.OthersBuffered);
+                }
+                else if (hit.transform.TryGetComponent(out ItemEquipable equipable))
+                {
+                    equipable.GrabEquip(itemEquipPointTransform);
+                    equippedItem = equipable;
+                    equipable.photonView.RPC("RPC_OnGrab", RpcTarget.OthersBuffered);
+                }
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            if (!isHandEmpty)
+            if (currentItem != null)
             {
-                if (currentItem != null)
-                {
-                    // self explanatory
-                    currentItem.Drop();
-
-                    // notify other players
-                    currentItem.photonView.RPC("RPC_Drop", RpcTarget.OthersBuffered);
-
-                    currentItem = null;
-                    isHandEmpty = true;
-                }
-                else if (equippedItem != null)
-                {
-                    equippedItem.Drop();
-
-                    // notify other players
-                    equippedItem.photonView.RPC("RPC_Drop", RpcTarget.OthersBuffered);
-
-                    equippedItem = null;
-                    isHandEmpty = true;
-                }
-
+                currentItem.Drop();
+                currentItem = null;
+            }
+            else if (equippedItem != null)
+            {
+                equippedItem.Drop();
+                equippedItem = null;
             }
         }
     }
 
-    private void PickUp()
+    public void ForceReleaseItem(ItemGrabable grabable = null, ItemEquipable equipable = null)
     {
-        // initialize mask layers eligible for pickup
-        int mask = LayerMask.GetMask("Grabable Item", "Equipable Item");
+        if (grabable != null && currentItem == grabable)
+            currentItem = null;
 
-        // cast a ray from the player camera, then shoot that ray forward
-        // ray length is determined by interactRange
-        // "hit" is whatever the raycast hit
-        if (Physics.Raycast(playerCameraTransform.position, playerCameraTransform.forward, out hit, interactRange, mask))
-        {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                // checks if the object the ray hits has the ItemGrabable script attached
-                if (hit.transform.TryGetComponent(out ItemGrabable itemGrabable))
-                {
-                    if (isHandEmpty)
-                    {
-                        // calls the function from the ItemGrabable script this object is attached to
-                        itemGrabable.Grab(itemGrabPointTransform);
-
-                        // notify other players
-                        itemGrabable.photonView.RPC("RPC_Grab", RpcTarget.OthersBuffered, pv.ViewID);
-
-                        // stores variable
-                        currentItem = itemGrabable;
-
-                        // hand is occupied
-                        isHandEmpty = false;
-
-                        Debug.Log("Picked up " + currentItem.name);
-                    }
-                }
-                else if (hit.transform.TryGetComponent(out ItemEquipable itemEquipable))
-                {
-                    if (isHandEmpty)
-                    {
-                        // calls the function from the ItemGrabable script this object is attached to
-                        itemEquipable.Grab(itemEquipPointTransform);
-
-                        // notify other players
-                        itemEquipable.photonView.RPC("RPC_Grab", RpcTarget.OthersBuffered, pv.ViewID);
-
-                        // stores variable
-                        equippedItem = itemEquipable;
-
-                        // hand is occupied
-                        isHandEmpty = false;
-
-                        Debug.Log("Equipped: " + equippedItem.name);
-                    }
-                }
-            }
-        }
+        if (equipable != null && equippedItem == equipable)
+            equippedItem = null;
     }
 }
