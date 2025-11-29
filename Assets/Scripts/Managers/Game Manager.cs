@@ -5,14 +5,10 @@ using TMPro;
 
 public class GameManager : MonoBehaviourPun
 {
-    [Header("UI Elements")]
     public Image trashFillImage;
     public TMP_Text trashPercentageText;
 
-    [Header("Game Settings")]
     public int maxTrashCount = 10;
-
-    [Header("Runtime")]
     public int currentTrashCount = 0;
 
     void Start()
@@ -25,7 +21,6 @@ public class GameManager : MonoBehaviourPun
     {
         currentTrashCount++;
         currentTrashCount = Mathf.Clamp(currentTrashCount, 0, maxTrashCount);
-
         UpdateFill();
     }
 

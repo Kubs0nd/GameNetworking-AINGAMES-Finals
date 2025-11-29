@@ -1020,10 +1020,10 @@ GameObject:
   - component: {fileID: 5578984007898879744}
   - component: {fileID: 5515390331862232584}
   - component: {fileID: 5855592958519029306}
-  - component: {fileID: 1841616629879698502}
   - component: {fileID: 293822597322018654}
   - component: {fileID: 1790989476767024233}
   - component: {fileID: 5273265242870937088}
+  - component: {fileID: -5869517283873517026}
   m_Layer: 8
   m_Name: Player 1
   m_TagString: Player
@@ -1148,7 +1148,7 @@ MonoBehaviour:
   prefixField: -1
   Synchronization: 3
   OwnershipTransfer: 0
-  observableSearch: 2
+  observableSearch: 1
   ObservedComponents:
   - {fileID: 293822597322018654}
   - {fileID: 5273265242870937088}
@@ -1195,25 +1195,6 @@ MonoBehaviour:
   minPitch: -60
   maxPitch: 60
   mouseSmoothTime: 0.02
---- !u!114 &1841616629879698502
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2363065445299639129}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1bbcc06980fe1d24e8841072ce551870, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Interact
-  playerCameraTransform: {fileID: 1048769243658271150}
-  itemGrabPointTransform: {fileID: 4690688851319702439}
-  itemEquipPointTransform: {fileID: 6861566102642697143}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
-  interactRange: 3
 --- !u!114 &293822597322018654
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1271,6 +1252,23 @@ MonoBehaviour:
   m_SynchronizeLayers:
   - SynchronizeType: 1
     LayerIndex: 0
+--- !u!114 &-5869517283873517026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2363065445299639129}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fdcd3c0f29b736d4f9b4a9a267df77a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
+  interactDistance: 3
+  holdPoint: {fileID: 4690688851319702439}
+  interactMask:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &2459369691069558545
 GameObject:
   m_ObjectHideFlags: 0
@@ -2515,6 +2513,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4690688851319702439}
+  - component: {fileID: 7249300009697034490}
   m_Layer: 0
   m_Name: Grab Item Position
   m_TagString: Untagged
@@ -2537,6 +2536,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1048769243658271150}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7249300009697034490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6148227127134642506}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonView
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &6264174331991824139
 GameObject:
   m_ObjectHideFlags: 0

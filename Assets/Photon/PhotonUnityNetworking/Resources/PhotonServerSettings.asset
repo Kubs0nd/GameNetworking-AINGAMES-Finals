@@ -46,6 +46,15 @@ MonoBehaviour:
   - RPC_TrashDrop
   - RPC_TrashGrab
   - RPC_IncrementTrashCounter
+  - RPC_RequestDumpTrash
+  - RPC_OnDrop
+  - RPC_OnGrab
+  - RPC_ApproveGrab_All
+  - RPC_GrabNotifyOthers
+  - RPC_NotifyDrop_All
+  - RPC_RequestDrop_Master
+  - RPC_RequestGrab_Master
+  - RPC_PickUp
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
