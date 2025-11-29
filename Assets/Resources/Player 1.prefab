@@ -1284,6 +1284,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipment
   equipmentA: {fileID: 2537952751897619458}
   equipmentB: {fileID: 2708026705655620959}
+  currentState: 3
 --- !u!1 &2459369691069558545
 GameObject:
   m_ObjectHideFlags: 0
@@ -3263,6 +3264,7 @@ GameObject:
   - component: {fileID: 7192846701358507016}
   - component: {fileID: 6444125847350925485}
   - component: {fileID: 2708026705655620959}
+  - component: {fileID: 6153294244692542971}
   m_Layer: 7
   m_Name: Litter Picker (Temp)
   m_TagString: Untagged
@@ -4462,7 +4464,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 1
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 6153294244692542971}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -4478,6 +4481,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26a14b9c180c553479ce0ac0a1b94a4d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentLitterPicker
+--- !u!114 &6153294244692542971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8043060795007636431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonTransformView
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &8051737447986062203
 GameObject:
   m_ObjectHideFlags: 0
@@ -4525,6 +4544,7 @@ GameObject:
   - component: {fileID: 4168699744631401483}
   - component: {fileID: 7674548359134962064}
   - component: {fileID: 2537952751897619458}
+  - component: {fileID: 4001534218654850805}
   m_Layer: 7
   m_Name: Vacuum (Temp)
   m_TagString: Untagged
@@ -5620,6 +5640,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3699d08a1cf3fe4aa9a501140b6a1cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentVacuum
+--- !u!114 &4001534218654850805
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8089266064875731590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonTransformView
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &8244515632703379544
 GameObject:
   m_ObjectHideFlags: 0

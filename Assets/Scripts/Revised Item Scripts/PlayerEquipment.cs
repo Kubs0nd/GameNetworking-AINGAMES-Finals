@@ -15,6 +15,7 @@ public class PlayerEquipment : MonoBehaviourPun
 
     void Start()
     {
+        // start without anything equipped
         if (equipmentA) equipmentA.DisableEquipment();
         if (equipmentB) equipmentB.DisableEquipment();
     }
