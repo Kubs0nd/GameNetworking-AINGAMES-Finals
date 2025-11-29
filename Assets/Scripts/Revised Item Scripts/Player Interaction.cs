@@ -9,6 +9,12 @@ public class PlayerInteraction : MonoBehaviourPun
     public LayerMask interactMask;
 
     private InteractableItem heldItem;
+    private PlayerEquipment equipment;
+
+    private void Start()
+    {
+        equipment = GetComponent<PlayerEquipment>();
+    }
 
     void Update()
     {
@@ -34,6 +40,8 @@ public class PlayerInteraction : MonoBehaviourPun
 
     void TryPickup()
     {
+        if (!equipment.CanPickup) return;
+
         Ray ray = new Ray(transform.position, transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactMask))
         {

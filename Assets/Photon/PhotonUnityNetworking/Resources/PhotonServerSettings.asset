@@ -55,6 +55,7 @@ MonoBehaviour:
   - RPC_RequestDrop_Master
   - RPC_RequestGrab_Master
   - RPC_PickUp
+  - RPC_Equip
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
