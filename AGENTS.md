@@ -2,7 +2,7 @@
 - Project name: GameNetworking-AINGAMES-Finals
 - Unity version: Unity 6000.2.12f1
 - Active game object:
-  - Name: Cube
+  - Name: Vacuum (Temp)
   - Tag: Untagged
-  - Layer: Grabable Item
+  - Layer: Equipable Item
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->
