@@ -41,10 +41,29 @@ public class GameManager : MonoBehaviourPun
         }
     }
 
+
+    // Call this function for when the AI needs to hinder cleaning progress
+    // GameManager.Instance?.OnDirtAdded(); <- Use this line, no reference in your AI script needed
+    public void OnDirtAdded()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(RPC_DecreaseTrashCounter), RpcTarget.AllBuffered);
+        }
+    }
+
     [PunRPC]
     void RPC_IncrementTrashCounter()
     {
         currentTrashCount++;
+        currentTrashCount = Mathf.Clamp(currentTrashCount, 0, maxTrashCount);
+        UpdateFill();
+    }
+
+    [PunRPC]
+    void RPC_DecreaseTrashCounter()
+    {
+        currentTrashCount--;
         currentTrashCount = Mathf.Clamp(currentTrashCount, 0, maxTrashCount);
         UpdateFill();
     }
