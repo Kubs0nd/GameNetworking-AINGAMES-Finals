@@ -3,10 +3,13 @@ using Photon.Pun;
 
 public class Dumpster : MonoBehaviourPun
 {
+    [Header("Detection")]
     public BoxCollider boxCollider;
+    private Collider[] overlapResults = new Collider[16];
+
+    [Header("Smoke Effect")]
     public GameObject smokeEffectPrefab;
     public float smokeLifetime = 3f;
-    private Collider[] overlapResults = new Collider[16];
 
     void Start()
     {
@@ -14,6 +17,11 @@ public class Dumpster : MonoBehaviourPun
     }
 
     void FixedUpdate()
+    {
+        DetectTrash();
+    }
+
+    void DetectTrash()
     {
         Vector3 center = boxCollider.bounds.center;
         Vector3 halfExtents = boxCollider.bounds.extents;
@@ -26,33 +34,36 @@ public class Dumpster : MonoBehaviourPun
             Collider col = overlapResults[i];
             if (col == null) continue;
 
-            var ni = col.GetComponent<NetworkInteractable>();
-            if (ni == null) continue;
+            var trash = col.GetComponent<Trash>();
+            if (trash == null) continue;
 
             if (PhotonNetwork.IsMasterClient)
             {
-                HandleTrashDestruction(ni);
+                HandleTrashDestruction(trash);
             }
             else
             {
-                photonView.RPC(nameof(RPC_RequestDumpTrash), RpcTarget.MasterClient, ni.photonView.ViewID);
+                photonView.RPC(nameof(RPC_RequestDumpTrash), RpcTarget.MasterClient, trash.photonView.ViewID);
             }
         }
     }
 
-    void HandleTrashDestruction(NetworkInteractable ni)
+    void HandleTrashDestruction(Trash trash)
     {
-        Vector3 pos = ni.transform.position;
+        Vector3 position = trash.transform.position;
 
-        if (ni.photonView.IsMine || PhotonNetwork.IsMasterClient)
+        if (trash.photonView.IsMine || PhotonNetwork.IsMasterClient)
         {
-            PhotonNetwork.Destroy(ni.photonView);
+            PhotonNetwork.Destroy(trash.photonView);
         }
 
         GameManager gm = FindFirstObjectByType<GameManager>();
-        if (gm != null) gm.TrashDumped();
+        if (gm != null)
+        {
+            gm.TrashDumped();
+        }
 
-        photonView.RPC(nameof(RPC_SpawnSmoke), RpcTarget.AllBuffered, pos);
+        photonView.RPC(nameof(RPC_SpawnSmoke), RpcTarget.AllBuffered, position);
     }
 
     [PunRPC]
@@ -60,11 +71,14 @@ public class Dumpster : MonoBehaviourPun
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
-        PhotonView tv = PhotonView.Find(targetViewID);
-        if (tv == null) return;
+        PhotonView targetView = PhotonView.Find(targetViewID);
+        if (targetView == null) return;
 
-        var ni = tv.GetComponent<NetworkInteractable>();
-        if (ni != null) HandleTrashDestruction(ni);
+        var trash = targetView.GetComponent<Trash>();
+        if (trash != null)
+        {
+            HandleTrashDestruction(trash);
+        }
     }
 
     [PunRPC]
@@ -72,8 +86,8 @@ public class Dumpster : MonoBehaviourPun
     {
         if (smokeEffectPrefab != null)
         {
-            var s = Instantiate(smokeEffectPrefab, position, Quaternion.identity);
-            Destroy(s, smokeLifetime);
+            GameObject smoke = Instantiate(smokeEffectPrefab, position, Quaternion.identity);
+            Destroy(smoke, smokeLifetime);
         }
     }
 }

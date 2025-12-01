@@ -1,9 +1,7 @@
 using UnityEngine;
+using Photon.Pun;
 
-public class Trash : ItemGrabable
+public class Trash : MonoBehaviourPun
 {
-    protected override void Awake()
-    {
-        base.Awake();
-    }
+    // Function here or something
 }

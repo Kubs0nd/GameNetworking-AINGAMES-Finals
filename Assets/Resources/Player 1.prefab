@@ -1153,6 +1153,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 293822597322018654}
   - {fileID: 5273265242870937088}
+  - {fileID: 8528372438237535169}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -1265,7 +1266,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdcd3c0f29b736d4f9b4a9a267df77a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteraction
-  interactDistance: 3
+  interactDistance: 1.5
   holdPoint: {fileID: 4690688851319702439}
   interactMask:
     serializedVersion: 2
@@ -2682,6 +2683,8 @@ GameObject:
   - component: {fileID: 6807438110283029491}
   - component: {fileID: 4061252595784118107}
   - component: {fileID: 8340329115116253027}
+  - component: {fileID: 2520340552562239102}
+  - component: {fileID: 4388011698725714610}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -2809,6 +2812,46 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &2520340552562239102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6305134959864580071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonView
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents:
+  - {fileID: 4388011698725714610}
+  - {fileID: 8528372438237535169}
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
+--- !u!114 &4388011698725714610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6305134959864580071}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonTransformView
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &6363054541758979438
 GameObject:
   m_ObjectHideFlags: 0
@@ -3263,8 +3306,8 @@ GameObject:
   - component: {fileID: 7139947290265800765}
   - component: {fileID: 7192846701358507016}
   - component: {fileID: 6444125847350925485}
-  - component: {fileID: 2708026705655620959}
   - component: {fileID: 6153294244692542971}
+  - component: {fileID: 2708026705655620959}
   m_Layer: 7
   m_Name: Litter Picker (Temp)
   m_TagString: Untagged
@@ -4469,18 +4512,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &2708026705655620959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8043060795007636431}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26a14b9c180c553479ce0ac0a1b94a4d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EquipmentLitterPicker
 --- !u!114 &6153294244692542971
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4497,6 +4528,24 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &2708026705655620959
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8043060795007636431}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26a14b9c180c553479ce0ac0a1b94a4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentLitterPicker
+  grabRadius: 0.4
+  holdPoint: {fileID: 3201041003608706074}
+  grabMask:
+    serializedVersion: 2
+    m_Bits: 64
+  smoothSpeed: 15
 --- !u!1 &8051737447986062203
 GameObject:
   m_ObjectHideFlags: 0
@@ -5624,7 +5673,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 1
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: 4001534218654850805}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -5729,6 +5779,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6861566102642697143}
+  - component: {fileID: 8528372438237535169}
   m_Layer: 0
   m_Name: Equip Item Position
   m_TagString: Untagged
@@ -5753,6 +5804,22 @@ Transform:
   - {fileID: 6275278722609601389}
   m_Father: {fileID: 1048769243658271150}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8528372438237535169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8313649382564761488}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonTransformView
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &8415643379576846881
 GameObject:
   m_ObjectHideFlags: 0

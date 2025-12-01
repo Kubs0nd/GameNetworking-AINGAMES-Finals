@@ -5,9 +5,11 @@ using TMPro;
 
 public class GameManager : MonoBehaviourPun
 {
+    [Header("UI Elements")]
     public Image trashFillImage;
     public TMP_Text trashPercentageText;
 
+    [Header("Trash Settings")]
     public int maxTrashCount = 10;
     public int currentTrashCount = 0;
 
@@ -16,8 +18,16 @@ public class GameManager : MonoBehaviourPun
         UpdateFill();
     }
 
+    public void TrashDumped()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(RPC_IncrementTrashCounter), RpcTarget.AllBuffered);
+        }
+    }
+
     [PunRPC]
-    public void RPC_IncrementTrashCounter()
+    void RPC_IncrementTrashCounter()
     {
         currentTrashCount++;
         currentTrashCount = Mathf.Clamp(currentTrashCount, 0, maxTrashCount);
@@ -28,22 +38,13 @@ public class GameManager : MonoBehaviourPun
     {
         if (trashFillImage != null)
         {
-            float fillAmount = (float)currentTrashCount / maxTrashCount;
-            trashFillImage.fillAmount = fillAmount;
+            trashFillImage.fillAmount = (float)currentTrashCount / maxTrashCount;
         }
 
         if (trashPercentageText != null)
         {
             float percentage = ((float)currentTrashCount / maxTrashCount) * 100f;
             trashPercentageText.text = Mathf.RoundToInt(percentage) + "%";
-        }
-    }
-
-    public void TrashDumped()
-    {
-        if (PhotonNetwork.IsMasterClient)
-        {
-            photonView.RPC("RPC_IncrementTrashCounter", RpcTarget.AllBuffered);
         }
     }
 }
