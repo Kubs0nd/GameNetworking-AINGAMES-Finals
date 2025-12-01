@@ -1197,6 +1197,14 @@ PrefabInstance:
       propertyPath: sceneViewId
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -929594849336193103, guid: 37c6be344239021409dcf0b136f05420, type: 3}
+      propertyPath: ObservedComponents.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -929594849336193103, guid: 37c6be344239021409dcf0b136f05420, type: 3}
+      propertyPath: 'ObservedComponents.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2054117629}
     - target: {fileID: 674002284571026363, guid: 37c6be344239021409dcf0b136f05420, type: 3}
       propertyPath: m_Name
       value: TestAI
@@ -1245,10 +1253,14 @@ PrefabInstance:
       propertyPath: centrePoint
       value: 
       objectReference: {fileID: 1262239539}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: -929594849336193103, guid: 37c6be344239021409dcf0b136f05420, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 674002284571026363, guid: 37c6be344239021409dcf0b136f05420, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2054117629}
   m_SourcePrefab: {fileID: 100100000, guid: 37c6be344239021409dcf0b136f05420, type: 3}
 --- !u!1 &239973147
 GameObject:
@@ -15875,6 +15887,27 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &2054117621 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 674002284571026363, guid: 37c6be344239021409dcf0b136f05420, type: 3}
+  m_PrefabInstance: {fileID: 219897261}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2054117629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2054117621}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: PhotonUnityNetworking::Photon.Pun.PhotonTransformView
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &2065234947
 GameObject:
   m_ObjectHideFlags: 0
