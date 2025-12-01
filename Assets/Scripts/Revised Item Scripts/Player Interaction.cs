@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using Photon.Pun;
 
 public class PlayerInteraction : MonoBehaviourPun
@@ -8,24 +9,74 @@ public class PlayerInteraction : MonoBehaviourPun
     public Transform holdPoint;
     public LayerMask interactMask;
 
+    [Header("Crosshair Icons")]
+    public Image defaultCrosshair;
+    public Image GrabIcon;
+    public Image HoldingIcon;
+
+    private RaycastHit hit;
     private InteractableItem heldItem;
     private PlayerEquipment equipment;
 
     private void Start()
     {
         equipment = GetComponent<PlayerEquipment>();
+        GrabIcon.enabled = false;
+        HoldingIcon.enabled = false;
     }
 
     void Update()
     {
         if (!photonView.IsMine) return; // Only local player can interact
 
-        // Pickup
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, interactDistance, interactMask))
         {
-            if (!heldItem)
-                TryPickup();
+            GameObject detectedObject = hit.collider.gameObject;
+
+            if (detectedObject.GetComponent<InteractableItem>() != null)
+            {
+                defaultCrosshair.enabled = false;
+                GrabIcon.enabled = true;
+
+                if (Input.GetKeyDown(KeyCode.E) && !heldItem)
+                {
+                    TryPickup();
+                    GrabIcon.enabled = false;
+                    HoldingIcon.enabled = true;
+                }
+            }
+            else
+            {
+                GrabIcon.enabled = false;
+
+                if (!heldItem)
+                {
+                    HoldingIcon.enabled = false;
+                    defaultCrosshair.enabled = true;
+                }
+                else
+                {
+                    defaultCrosshair.enabled = false;
+                    HoldingIcon.enabled = true;
+                }
+            }
         }
+        else
+        {
+            GrabIcon.enabled = false;
+
+            if (!heldItem)
+            {
+                HoldingIcon.enabled = false;
+                defaultCrosshair.enabled = true;
+            }
+            else
+            {
+                defaultCrosshair.enabled = false;
+                HoldingIcon.enabled = true;
+            }
+        }
+
 
         // Drop
         if (Input.GetKeyDown(KeyCode.Q))
@@ -33,7 +84,10 @@ public class PlayerInteraction : MonoBehaviourPun
             if (heldItem)
             {
                 heldItem.Drop();
+                HoldingIcon.enabled = false;
+                defaultCrosshair.enabled = true;
                 heldItem = null;
+
             }
         }
     }
