@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - Bullet
+  - AI
   layers:
   - Default
   - TransparentFX
@@ -17,7 +19,7 @@ TagManager:
   - Grabbed
   - Equipped
   - Dirt
-  - 
+  - NavMesh
   - 
   - 
   - 
