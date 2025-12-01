@@ -13,12 +13,27 @@ public class GameManager : MonoBehaviourPun
     public int maxTrashCount = 10;
     public int currentTrashCount = 0;
 
+    public static GameManager Instance;
+
+    void Awake()
+    {
+        if (Instance == null) Instance = this;
+    }
+
     void Start()
     {
         UpdateFill();
     }
 
     public void TrashDumped()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            photonView.RPC(nameof(RPC_IncrementTrashCounter), RpcTarget.AllBuffered);
+        }
+    }
+
+    public void OnDirtCleaned()
     {
         if (PhotonNetwork.IsMasterClient)
         {

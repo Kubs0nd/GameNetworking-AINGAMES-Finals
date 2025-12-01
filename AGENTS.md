@@ -2,7 +2,7 @@
 - Project name: GameNetworking-AINGAMES-Finals
 - Unity version: Unity 6000.2.12f1
 - Active game object:
-  - Name: Game Manager
+  - Name: Sphere
   - Tag: Untagged
-  - Layer: Default
+  - Layer: Dirt
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

@@ -20,7 +20,6 @@ public class EquipmentBGrabber : EquipmentBase
     void Start()
     {
         ownerView = GetComponentInParent<PhotonView>();
-        gameObject.SetActive(false);
     }
 
     void Update()
