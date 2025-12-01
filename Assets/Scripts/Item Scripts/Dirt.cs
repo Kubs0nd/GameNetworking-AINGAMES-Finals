@@ -12,16 +12,9 @@ public class Dirt : NetworkInteractable
         initialScale = transform.localScale;
     }
 
-
     public void CleanUp(float amount)
     {
-        if (photonView != null && !photonView.IsMine)
-        {
-            photonView.RPC(nameof(RPC_CleanUp), photonView.Owner, amount);
-            return;
-        }
-
-        RPC_CleanUp(amount);
+        photonView.RPC(nameof(RPC_CleanUp), RpcTarget.AllBuffered, amount);
     }
 
     [PunRPC]
@@ -34,8 +27,8 @@ public class Dirt : NetworkInteractable
 
         if (cleanliness <= 0f)
         {
-            PhotonNetwork.Destroy(photonView);
+            GameManager.Instance?.OnDirtCleaned();
+            gameObject.SetActive(false);
         }
     }
-
 }

@@ -2,7 +2,7 @@
 - Project name: GameNetworking-AINGAMES-Finals
 - Unity version: Unity 6000.2.12f1
 - Active game object:
-  - Name: Cube (2)
+  - Name: Sphere
   - Tag: Untagged
-  - Layer: Grabable Item
+  - Layer: Dirt
 <!-- UNITY CODE ASSIST INSTRUCTIONS END -->

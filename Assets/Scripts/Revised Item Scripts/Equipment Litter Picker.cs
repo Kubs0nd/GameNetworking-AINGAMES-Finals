@@ -20,7 +20,6 @@ public class EquipmentBGrabber : EquipmentBase
     void Start()
     {
         ownerView = GetComponentInParent<PhotonView>();
-        gameObject.SetActive(false);
     }
 
     void Update()
@@ -72,6 +71,7 @@ public class EquipmentBGrabber : EquipmentBase
             if (grabbedPRV != null) grabbedPRV.enabled = false;
 
             grabbedRB.isKinematic = true;
+            grabbedPRV.gameObject.layer = LayerMask.NameToLayer("Grabbed");
 
             networkPosition = holdPoint.position;
             networkRotation = holdPoint.rotation;
@@ -102,6 +102,7 @@ public class EquipmentBGrabber : EquipmentBase
         if (grabbedRB == null || grabbedView == null) return;
 
         grabbedRB.isKinematic = false;
+        grabbedPRV.gameObject.layer = LayerMask.NameToLayer("Grabable Item");
 
         if (grabbedPRV != null) grabbedPRV.enabled = true;
 

@@ -1282,7 +1282,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7113894f04316d94b8ee29e3e5b0883e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEquipment
-  equipmentA: {fileID: 2537952751897619458}
+  equipmentA: {fileID: 3297595954188155616}
   equipmentB: {fileID: 2708026705655620959}
   currentState: 3
 --- !u!1 &2459369691069558545
@@ -4591,8 +4591,8 @@ GameObject:
   - component: {fileID: 3548244805439746228}
   - component: {fileID: 4168699744631401483}
   - component: {fileID: 7674548359134962064}
-  - component: {fileID: 2537952751897619458}
   - component: {fileID: 4001534218654850805}
+  - component: {fileID: 3297595954188155616}
   m_Layer: 7
   m_Name: Vacuum (Temp)
   m_TagString: Untagged
@@ -5677,18 +5677,6 @@ MonoBehaviour:
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
---- !u!114 &2537952751897619458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8089266064875731590}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3699d08a1cf3fe4aa9a501140b6a1cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EquipmentVacuum
 --- !u!114 &4001534218654850805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5705,6 +5693,24 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &3297595954188155616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8089266064875731590}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3699d08a1cf3fe4aa9a501140b6a1cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EquipmentVacuum
+  vacuumCenter: {fileID: 7592190734850667818}
+  vacuumRadius: 0.5
+  cleanRate: 0.5
+  dirtMask:
+    serializedVersion: 2
+    m_Bits: 2048
 --- !u!1 &8244515632703379544
 GameObject:
   m_ObjectHideFlags: 0
