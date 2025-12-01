@@ -129,9 +129,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c0a06877032d89f479c9aa57b91e7ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AIFreeRoam
-  agent: {fileID: 1953498350348688133}
+  groundlayer:
+    serializedVersion: 2
+    m_Bits: 8
   range: 20
-  centrePoint: {fileID: 0}
 --- !u!195 &1953498350348688133
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -172,7 +173,8 @@ MonoBehaviour:
   Synchronization: 3
   OwnershipTransfer: 0
   observableSearch: 2
-  ObservedComponents: []
+  ObservedComponents:
+  - {fileID: -2085122921332901113}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0

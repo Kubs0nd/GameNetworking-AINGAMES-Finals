@@ -59,6 +59,8 @@ MonoBehaviour:
   - RPC_SyncGrabbedObject
   - SyncPosition
   - RPC_SyncRelease
+  - RPC_SpawnAI
+  - SpawnAI
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

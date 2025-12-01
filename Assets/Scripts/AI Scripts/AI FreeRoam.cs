@@ -1,50 +1,51 @@
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
-using UnityEngine.AI; 
+using UnityEngine.AI;
+
 public class AIFreeRoam : MonoBehaviourPun
 {
-    public NavMeshAgent agent;
-    public float range;
+    NavMeshAgent agent;
 
-    public Transform centrePoint;
+    [SerializeField] LayerMask groundlayer;
 
+    Vector3 dest;
+    bool walkpointSet;
+
+    [SerializeField] float range;
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
     }
 
-    
+    // Update is called once per frame
     void Update()
     {
         if (!PhotonNetwork.IsMasterClient) return;
 
-        if (agent.remainingDistance <= agent.stoppingDistance)
-        {
-            Vector3 point;
-            if (RandomPoint(centrePoint.position, range, out point))
-            {
-                Debug.DrawRay(point, Vector3.up, Color.blue, 1.0f);
-                agent.SetDestination(point);
-            }
-        }
-
+        Roam();
     }
-    bool RandomPoint(Vector3 center, float range, out Vector3 result)
+
+    void Roam()
     {
-
-        Vector3 randomPoint = center + Random.insideUnitSphere * range;
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas))
-        { 
-            result = hit.position;
-            return true;
-        }
-
-        result = Vector3.zero;
-        return false;
+        if (!walkpointSet) NextDest();
+        if (walkpointSet) agent.SetDestination(dest);
+        if (Vector3.Distance(transform.position, dest) < 1) walkpointSet = false;
     }
-    
+
+    void NextDest()
+    {
+        float z = Random.Range(-range, range);
+        float x = Random.Range(-range, range);
+
+        dest = new Vector3(transform.position.x + x, transform.position.y, transform.position.z + z);
+
+        if (Physics.Raycast(dest, Vector3.down, groundlayer))
+        {
+            walkpointSet = true;
+        }
+    }
 }
