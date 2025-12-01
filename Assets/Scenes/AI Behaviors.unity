@@ -1253,8 +1253,7 @@ PrefabInstance:
       propertyPath: centrePoint
       value: 
       objectReference: {fileID: 1262239539}
-    m_RemovedComponents:
-    - {fileID: -929594849336193103, guid: 37c6be344239021409dcf0b136f05420, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
