@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 1953498350348688133}
   - component: {fileID: -929594849336193103}
   - component: {fileID: -2085122921332901113}
+  - component: {fileID: -6450757292398887033}
   m_Layer: 0
   m_Name: TestAI
   m_TagString: Untagged
@@ -194,3 +195,22 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
+--- !u!114 &-6450757292398887033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 674002284571026363}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70b1097a9e229274f8f210599986e58a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AITrashAvoidance
+  forwardCheck: 2
+  sideCheck: 2
+  sideOffset: 0.6
+  turnStrength: 3.5
+  trashLayer:
+    serializedVersion: 2
+    m_Bits: 64
